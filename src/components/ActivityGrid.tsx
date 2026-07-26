@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from '../styles/components/activities.module.scss';
 import ActivityModal, { Activity } from './ActivityModal';
 import { getStoredGames } from '@/utils/storage';
@@ -17,7 +18,7 @@ const INITIAL_SPORTS_GAMES: Activity[] = [
     goingCount: 6,
     description: '冷氣大開！歡樂雙打臨打團，初階與中階球友皆歡迎，使用勝家一級比賽球。現場提供公用球拍與飲水機。',
     fee: '$ 150 / 人',
-    level: '初中階友善',
+    level: '初階歡樂友善',
     avatars: [
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
@@ -77,34 +78,12 @@ const INITIAL_SPORTS_GAMES: Activity[] = [
       'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=120&q=80',
     ],
   },
-  {
-    id: '5',
-    emoji: '🏐',
-    title: '臺大體育館 6v6 歡樂排球友誼賽',
-    category: '排球 🏐',
-    location: '臺灣大學舊體育館',
-    city: '台北市',
-    time: '今天 19:00 - 22:00',
-    goingCount: 12,
-    description: '室內木地板網高 2.43m，徵求攻擊手與自由球員，注重團隊配合與開心打球！',
-    fee: '$ 120 / 人',
-    level: '中階對抗',
-    avatars: [
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
-    ],
-  },
 ];
 
-const CATEGORIES = ['全部', '羽球 🏸', '籃球 🏀', '網球 🎾', '皮克球 🏓', '排球 🏐'];
-
 export default function ActivityGrid() {
-  const [selectedCategory, setSelectedCategory] = useState('全部');
   const [activeModalItem, setActiveModalItem] = useState<Activity | null>(null);
   const [allGames, setAllGames] = useState<Activity[]>(INITIAL_SPORTS_GAMES);
 
-  // Load custom created games from localStorage on mount
   useEffect(() => {
     const customGames = getStoredGames();
     if (customGames.length > 0) {
@@ -112,34 +91,16 @@ export default function ActivityGrid() {
     }
   }, []);
 
-  const filteredActivities =
-    selectedCategory === '全部'
-      ? allGames
-      : allGames.filter((a) => a.category.includes(selectedCategory.replace(/ [^\s]+/g, '')) || a.category === selectedCategory);
-
   return (
     <section className={styles.section} id="activities">
       <div className={styles.head}>
-        <h2>即時報名附近的運動球局</h2>
+        <h2>即時報名附近的熱門運動球局</h2>
         <p>告別找不到球友的困擾！輕鬆加入羽球、籃球、網球開團。</p>
       </div>
 
-      {/* Category Tabs */}
-      <div className={styles.filterTabs}>
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            className={`${styles.tab} ${selectedCategory === cat ? styles.activeTab : ''}`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Activity Cards Grid */}
+      {/* Activity Cards Grid Teaser */}
       <div className={styles.grid}>
-        {filteredActivities.map((act) => (
+        {allGames.slice(0, 4).map((act) => (
           <div key={act.id} className={styles.card} onClick={() => setActiveModalItem(act)}>
             <div className={styles.emoji}>{act.emoji}</div>
             <h3 className={styles.title}>{act.title}</h3>
@@ -156,10 +117,32 @@ export default function ActivityGrid() {
                   <div className={styles.extraCount}>+{act.goingCount - 3}</div>
                 )}
               </div>
-              <span className={styles.goingBadge}>{act.goingCount} 人已參戰</span>
+              <span className={styles.goingBadge}>{act.goingCount} 人參戰</span>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* CTA Button to Full Explore Page */}
+      <div style={{ textAlign: 'center', marginTop: '36px' }}>
+        <Link
+          href="/games"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: '#ff6b00',
+            color: '#ffffff',
+            fontWeight: 800,
+            fontSize: '16px',
+            padding: '14px 32px',
+            borderRadius: '9999px',
+            boxShadow: '0 4px 16px rgba(255, 107, 0, 0.3)',
+            textDecoration: 'none',
+          }}
+        >
+          🔍 查看全部運動球局並進行高級篩選 ➔
+        </Link>
       </div>
 
       {/* Activity Detail Modal */}

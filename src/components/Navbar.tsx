@@ -13,7 +13,7 @@ export default function Navbar() {
       </Link>
 
       <div className={styles.links}>
-        <Link href="/#activities" className={styles.navHideMobile}>熱門球局</Link>
+        <Link href="/games" className={styles.navHideMobile}>探索球局 🔍</Link>
         <Link href="/#timeline" className={styles.navHideMobile}>如何揪團</Link>
         <Link href="/#reviews" className={styles.navHideMobile}>球友評價</Link>
         <Link href="/create" className={styles.createCta}>🏀 立即開局</Link>
