@@ -9,7 +9,7 @@
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 0 24px;
 
@@ -23,23 +23,23 @@
 
   .topRow {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
+    gap: 20px;
     flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
 
-  h1 {
-    font-size: clamp(28px, 4.2vw, 42px);
-    font-weight: 800;
-    letter-spacing: -1.2px;
-    color: $text;
-  }
+    h1 {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: $text;
+      margin-bottom: 6px;
+    }
 
-  p {
-    font-size: 16px;
-    color: $text-soft;
+    p {
+      font-size: 16px;
+      color: $text-soft;
+    }
   }
 
   .hostBtn {
@@ -49,7 +49,7 @@
     color: $white;
     font-size: 15px;
     font-weight: 700;
-    box-shadow: 0 4px 16px rgba(255, 107, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(255, 149, 0, 0.3);
 
     &:hover {
       background: $primary-dark;
@@ -58,14 +58,14 @@
   }
 }
 
-// Comprehensive Filter Panel
+// Apple Segmented / Card Filter Panel
 .filterPanel {
   background: $white;
   border: 1px solid $border;
   border-radius: $radius-xl;
   padding: 24px;
-  margin-bottom: 36px;
   box-shadow: $shadow-sm;
+  margin-bottom: 32px;
 
   @include respond-to('sm') {
     padding: 16px;
@@ -76,41 +76,44 @@
   position: relative;
   margin-bottom: 20px;
 
+  .searchIcon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: $text-muted;
+  }
+
   input {
     width: 100%;
-    padding: 14px 20px 14px 46px;
-    border-radius: $radius-full;
+    padding: 14px 16px 14px 44px;
+    border-radius: $radius-md;
     border: 1px solid $border;
     background: $cream;
     font-size: 15px;
     color: $text;
-    font-family: inherit;
     transition: all 0.2s ease;
 
     &:focus {
       outline: none;
       border-color: $primary;
       background: $white;
-      box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.15);
     }
-  }
 
-  .searchIcon {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: $text-muted;
-    pointer-events: none;
+    &::placeholder {
+      color: $text-muted;
+    }
   }
 }
 
+// Apple Segmented Sports Category Pills
 .categoryPills {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   margin-bottom: 20px;
   scrollbar-width: none;
 
@@ -119,35 +122,37 @@
   }
 
   .pill {
-    padding: 8px 18px;
+    padding: 8px 16px;
     border-radius: $radius-full;
     background: $cream;
-    border: 1px solid $border;
+    border: 1px solid transparent;
     font-size: 14px;
     font-weight: 600;
     color: $text-soft;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
     &:hover {
-      background: $primary-soft;
-      color: $primary;
+      background: rgba(0, 0, 0, 0.05);
+      color: $text;
     }
   }
 
   .activePill {
-    background: $primary !important;
+    background: $text !important;
     color: $white !important;
-    border-color: $primary !important;
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
+// Advanced Dropdown Selects Grid
 .filtersGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 12px;
+  align-items: end;
 
   @include respond-to('md') {
     grid-template-columns: repeat(2, 1fr);
@@ -161,33 +166,44 @@
 .filterItem {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 
   label {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: $text-muted;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   select {
-    padding: 12px 14px;
+    width: 100%;
+    padding: 10px 14px;
     border-radius: $radius-md;
     border: 1px solid $border;
     background: $cream;
     font-size: 14px;
-    font-weight: 600;
     color: $text;
-    font-family: inherit;
     cursor: pointer;
-    transition: all 0.2s ease;
+    outline: none;
 
     &:focus {
-      outline: none;
       border-color: $primary;
       background: $white;
+    }
+  }
+
+  .resetBtn {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: $primary;
+    cursor: pointer;
+    padding: 10px;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
@@ -200,7 +216,7 @@
 
   .countText {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
     color: $text-soft;
 
     span {
@@ -208,26 +224,13 @@
       font-weight: 800;
     }
   }
-
-  .resetBtn {
-    background: none;
-    border: none;
-    font-size: 13px;
-    font-weight: 700;
-    color: $primary;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 .emptyState {
-  text-align: center;
-  padding: 60px 20px;
   background: $white;
   border-radius: $radius-xl;
+  padding: 60px 20px;
+  text-align: center;
   border: 1px solid $border;
 
   .emptyIcon {
@@ -239,13 +242,13 @@
     font-size: 20px;
     font-weight: 800;
     color: $text;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   p {
     font-size: 15px;
     color: $text-soft;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   .createEmptyBtn {

@@ -13,12 +13,12 @@
   }
 }
 
-// Glassmorphism Mixin
-@mixin glassmorphism($bg-alpha: 0.85, $blur: 20px) {
-  background: rgba(255, 251, 247, $bg-alpha);
-  backdrop-filter: blur($blur);
-  -webkit-backdrop-filter: blur($blur);
-  border: 1px solid $border;
+// Apple Native Glassmorphism (SF Materials)
+@mixin glassmorphism($bg-alpha: 0.8, $blur: 20px) {
+  background: rgba(245, 245, 247, $bg-alpha);
+  backdrop-filter: blur($blur) saturate(180%);
+  -webkit-backdrop-filter: blur($blur) saturate(180%);
+  border-bottom: 1px solid $border;
 }
 
 // Flex Center Shortcut
@@ -32,18 +32,19 @@
   }
 }
 
-// Button Base
+// Apple Action Button Base
 @mixin button-base {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 600;
   border-radius: $radius-full;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   border: none;
   text-decoration: none;
+  letter-spacing: -0.01em;
 
   &:active {
     transform: scale(0.97);

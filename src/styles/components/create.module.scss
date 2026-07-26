@@ -9,35 +9,39 @@
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 24px;
+
+  @include respond-to('md') {
+    padding: 0 16px;
+  }
 }
 
 .header {
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 
   .backLink {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 600;
     color: $primary;
-    margin-bottom: 14px;
-    transition: transform 0.2s ease;
+    text-decoration: none;
+    margin-bottom: 12px;
 
     &:hover {
-      transform: translateX(-4px);
+      text-decoration: underline;
     }
   }
 
   h1 {
-    font-size: clamp(28px, 4vw, 40px);
+    font-size: clamp(26px, 4vw, 36px);
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -0.03em;
     color: $text;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   p {
@@ -48,8 +52,8 @@
 
 .layoutGrid {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 36px;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
   align-items: start;
 
   @include respond-to('lg') {
@@ -57,16 +61,16 @@
   }
 }
 
-// Form Section
+// Apple Form Group Card
 .formCard {
   background: $white;
   border: 1px solid $border;
   border-radius: $radius-xl;
-  padding: 36px 30px;
+  padding: 32px;
   box-shadow: $shadow-sm;
 
   @include respond-to('sm') {
-    padding: 24px 18px;
+    padding: 20px 16px;
   }
 }
 
@@ -75,20 +79,21 @@
 
   label {
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     color: $text;
     margin-bottom: 8px;
+    letter-spacing: -0.01em;
 
     span {
-      color: $primary;
+      color: #ff3b30; // Apple Red
       margin-left: 4px;
     }
   }
 
   input, select, textarea {
     width: 100%;
-    padding: 14px 16px;
+    padding: 12px 16px;
     border-radius: $radius-md;
     border: 1px solid $border;
     background: $cream;
@@ -101,13 +106,13 @@
       outline: none;
       border-color: $primary;
       background: $white;
-      box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+      box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.15);
     }
   }
 
   textarea {
-    resize: vertical;
     min-height: 100px;
+    resize: vertical;
   }
 }
 
@@ -124,72 +129,61 @@
 .submitBtn {
   @include button-base;
   width: 100%;
-  padding: 16px 24px;
+  padding: 16px 28px;
   background: $primary;
   color: $white;
   font-size: 17px;
   font-weight: 800;
-  border-radius: $radius-full;
-  box-shadow: 0 6px 20px rgba(255, 107, 0, 0.35);
+  box-shadow: 0 6px 20px rgba(255, 149, 0, 0.35);
   margin-top: 12px;
 
   &:hover {
     background: $primary-dark;
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 107, 0, 0.45);
   }
 }
 
-// Live Preview Section
+// Live Preview Sticky Box
 .previewSticky {
   position: sticky;
-  top: 110px;
+  top: 90px;
+}
 
-  .previewLabel {
-    font-size: 13px;
-    font-weight: 800;
-    color: $text-muted;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+.previewLabel {
+  font-size: 13px;
+  font-weight: 800;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
 
 .previewCard {
   background: $white;
-  border: 2px dashed rgba(255, 107, 0, 0.4);
-  border-radius: $radius-lg;
-  padding: 24px 20px;
+  border: 1px solid $border;
+  border-radius: $radius-xl;
   box-shadow: $shadow-md;
-  position: relative;
-
-  .emoji {
-    font-size: 42px;
-    margin-bottom: 12px;
-  }
+  overflow: hidden;
 
   .title {
     font-size: 18px;
     font-weight: 800;
     color: $text;
     margin-bottom: 8px;
-    line-height: 1.3;
+    letter-spacing: -0.02em;
   }
 
   .location {
     font-size: 13px;
     color: $text-muted;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .metaBadges {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 
     .pill {
       background: $primary-soft;
@@ -205,10 +199,10 @@
     font-size: 13px;
     color: $text-soft;
     line-height: 1.5;
+    margin-bottom: 16px;
     background: $cream;
     padding: 12px;
-    border-radius: $radius-md;
-    margin-bottom: 16px;
+    border-radius: $radius-sm;
   }
 
   .footerRow {
@@ -216,12 +210,15 @@
     align-items: center;
     justify-content: space-between;
     padding-top: 12px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid $border;
 
     .goingBadge {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: $primary;
+      background: $primary-soft;
+      padding: 4px 12px;
+      border-radius: $radius-full;
     }
   }
 }
