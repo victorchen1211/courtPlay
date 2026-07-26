@@ -21,16 +21,17 @@ export default function Footer() {
         <div className={styles.linksGroup}>
           <div className={styles.col}>
             <h4>運動項目</h4>
-            <Link href="/#activities">羽球臨打 🏸</Link>
-            <Link href="/#activities">籃球 3v3 🏀</Link>
-            <Link href="/#activities">網球拉球 🎾</Link>
-            <Link href="/#activities">皮克球體驗 🏓</Link>
+            <Link href="/games">羽球臨打 🏸</Link>
+            <Link href="/games">籃球 3v3 🏀</Link>
+            <Link href="/games">網球拉球 🎾</Link>
+            <Link href="/games">皮克球體驗 🏓</Link>
           </div>
 
           <div className={styles.col}>
             <h4>球友功能</h4>
+            <Link href="/profile">個人資料中心 👤</Link>
             <Link href="/create">發起運動球局 🏀</Link>
-            <Link href="/#activities">尋找熱門球局 🔍</Link>
+            <Link href="/games">尋找熱門球局 🔍</Link>
             <Link href="/#reviews">球友真實評價 ⭐</Link>
           </div>
 

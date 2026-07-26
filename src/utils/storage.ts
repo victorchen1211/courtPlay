@@ -1,6 +1,8 @@
 import { Activity } from '@/components/ActivityModal';
 
 const STORAGE_KEY = 'courtplay_created_games';
+const JOINED_KEY = 'courtplay_joined_game_ids';
+const PROFILE_KEY = 'courtplay_user_profile';
 const CHAT_STORAGE_KEY_PREFIX = 'courtplay_chat_';
 
 export interface ChatMessage {
@@ -11,6 +13,26 @@ export interface ChatMessage {
   timestamp: string;
   isSelf?: boolean;
 }
+
+export interface UserProfile {
+  name: string;
+  handle: string;
+  avatar: string;
+  bio: string;
+  city: string;
+  favoriteSports: string[];
+  level: string;
+}
+
+export const INITIAL_PROFILE: UserProfile = {
+  name: 'Victor Chen',
+  handle: '@victor_chen',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+  bio: '熱愛羽球與籃球！每週固定打球 3 天，歡樂流汗、結交志同道合的好球友！🏀🏸',
+  city: '台北市',
+  favoriteSports: ['羽球 🏸', '籃球 🏀', '網球 🎾'],
+  level: '中階切磋對抗',
+};
 
 export const INITIAL_GAMES: Activity[] = [
   {
@@ -102,58 +124,6 @@ export const INITIAL_GAMES: Activity[] = [
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
     ],
   },
-  {
-    id: '6',
-    emoji: '🏸',
-    title: '南港運動中心 高階羽球切磋團',
-    category: '羽球 🏸',
-    location: '南港運動中心 4F',
-    city: '台北市',
-    time: '今天 20:00 - 22:00',
-    goingCount: 7,
-    description: '中高階（球齡 3 年以上）雙打切磋，使用勝利 Master 1 比賽球，含場地費與球費均分。',
-    fee: '$ 200 / 人',
-    level: '高階競技切磋',
-    avatars: [
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80',
-    ],
-  },
-  {
-    id: '7',
-    emoji: '🏀',
-    title: '竹北運動中心 室內 5v5 全場聯誼賽',
-    category: '籃球 🏀',
-    location: '竹北國民運動中心 4F',
-    city: '新竹縣市',
-    time: '明天 19:00 - 21:00',
-    goingCount: 15,
-    description: '專業裁判吹哨、電子計分板！兩隊輪流替換，極致流汗、無粗暴動作，歡迎科技業球友報名。',
-    fee: '$ 250 / 人',
-    level: '中階切磋對抗',
-    avatars: [
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&q=80',
-    ],
-  },
-  {
-    id: '8',
-    emoji: '🎾',
-    title: '臺中市網球中心 雙打交流開團',
-    category: '網球 🎾',
-    location: '臺中市網球中心 硬地 A 場',
-    city: '台中市',
-    time: '今天 16:30 - 18:30',
-    goingCount: 4,
-    description: '夕陽歡樂雙打對抗賽，NTRP 2.5 ~ 3.5 級別皆可報名，提供全新海德網球，打完一起喝飲品！',
-    fee: '場地費均分',
-    level: '初階歡樂友善',
-    avatars: [
-      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&q=80',
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80',
-    ],
-  },
 ];
 
 export function getStoredGames(): Activity[] {
@@ -197,6 +167,57 @@ export function saveNewGame(newGame: Omit<Activity, 'id' | 'avatars'> & { fee?: 
   return fullGameItem;
 }
 
+// Joined Games Logic
+export function getJoinedGameIds(): string[] {
+  if (typeof window === 'undefined') return ['1', '3']; // default pre-joined for demonstration
+  try {
+    const raw = localStorage.getItem(JOINED_KEY);
+    return raw ? JSON.parse(raw) : ['1', '3'];
+  } catch (err) {
+    return ['1', '3'];
+  }
+}
+
+export function isGameJoined(gameId: string): boolean {
+  const joined = getJoinedGameIds();
+  return joined.includes(gameId);
+}
+
+export function toggleJoinGame(gameId: string): boolean {
+  const current = getJoinedGameIds();
+  const exists = current.includes(gameId);
+  const updated = exists ? current.filter((id) => id !== gameId) : [...current, gameId];
+
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(JOINED_KEY, JSON.stringify(updated));
+  }
+  return !exists;
+}
+
+export function getJoinedGames(): Activity[] {
+  const joinedIds = getJoinedGameIds();
+  const all = getAllGames();
+  return all.filter((g) => joinedIds.includes(g.id));
+}
+
+// User Profile Helpers
+export function getUserProfile(): UserProfile {
+  if (typeof window === 'undefined') return INITIAL_PROFILE;
+  try {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    return raw ? JSON.parse(raw) : INITIAL_PROFILE;
+  } catch (err) {
+    return INITIAL_PROFILE;
+  }
+}
+
+export function saveUserProfile(profile: UserProfile): UserProfile {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  }
+  return profile;
+}
+
 // Chat Messages Helpers
 export function getGameMessages(gameId: string): ChatMessage[] {
   if (typeof window === 'undefined') return [];
@@ -207,7 +228,6 @@ export function getGameMessages(gameId: string): ChatMessage[] {
     console.error('Failed to load chat messages:', err);
   }
 
-  // Default initial sample messages per game
   return [
     {
       id: 'm1',
@@ -223,13 +243,6 @@ export function getGameMessages(gameId: string): ChatMessage[] {
       text: '收到！請問附近開車方便停車嗎？',
       timestamp: '10:35 AM',
     },
-    {
-      id: 'm3',
-      senderName: '球局團長 (Host)',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-      text: '場館地下室有收費停車場，或是對面巷子也有路邊停車格很方便！',
-      timestamp: '10:38 AM',
-    },
   ];
 }
 
@@ -241,7 +254,7 @@ export function addGameMessage(gameId: string, text: string, senderName = '我 (
   const newMessage: ChatMessage = {
     id: `msg_${Date.now()}`,
     senderName,
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
     text,
     timestamp: timeStr,
     isSelf: true,
