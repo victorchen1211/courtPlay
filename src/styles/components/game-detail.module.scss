@@ -9,7 +9,7 @@
 }
 
 .container {
-  max-width: 1080px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 24px;
 
@@ -67,36 +67,61 @@
   }
 }
 
-// Layout Grid: Main Info + Chatroom
-.mainGrid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 28px;
-  align-items: start;
+// 1. Photo Cover Banner at top
+.photoBanner {
+  width: 100%;
+  height: 340px;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 28px;
+  box-shadow: $shadow-md;
+  background: $primary-soft;
 
-  @include respond-to('lg') {
-    grid-template-columns: 1fr;
+  @include respond-to('sm') {
+    height: 220px;
+    border-radius: $radius-lg;
+  }
+
+  .bannerImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photoCategoryBadge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    padding: 6px 16px;
+    border-radius: $radius-full;
+    font-size: 14px;
+    font-weight: 800;
+    color: $text;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 }
 
-// Left Section: Main Info + Map
-.detailCard {
+// 2. Detail Information Card in middle
+.detailSection {
   background: $white;
   border: 1px solid $border;
   border-radius: $radius-xl;
-  padding: 32px 28px;
+  padding: 36px 32px;
   box-shadow: $shadow-sm;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 
   @include respond-to('sm') {
-    padding: 20px 16px;
+    padding: 24px 18px;
   }
 
   .headerRow {
     display: flex;
     align-items: flex-start;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 
     .emojiBadge {
       font-size: 48px;
@@ -107,16 +132,16 @@
       flex: 1;
 
       h1 {
-        font-size: clamp(22px, 3.5vw, 32px);
+        font-size: clamp(24px, 3.8vw, 36px);
         font-weight: 800;
         letter-spacing: -0.8px;
         color: $text;
         line-height: 1.2;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
 
       .metaLocation {
-        font-size: 14px;
+        font-size: 15px;
         color: $text-muted;
         display: flex;
         align-items: center;
@@ -130,30 +155,30 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 
     .pill {
       background: $primary-soft;
       color: $primary;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: $radius-full;
     }
   }
 
   .descriptionBox {
     background: $cream;
-    padding: 18px;
+    padding: 20px;
     border-radius: $radius-md;
     font-size: 15px;
-    line-height: 1.65;
+    line-height: 1.7;
     color: $text-soft;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 
   .attendeesSection {
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 
     h4 {
       font-size: 14px;
@@ -161,33 +186,33 @@
       color: $text-muted;
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .avatarsGrid {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
 
       .avatarItem {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         background: $warm-bg;
-        padding: 6px 12px 6px 6px;
+        padding: 6px 14px 6px 6px;
         border-radius: $radius-full;
         border: 1px solid $border;
 
         img {
-          width: 28px;
-          height: 28px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
           object-fit: cover;
         }
 
         span {
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 700;
           color: $text;
         }
@@ -201,7 +226,7 @@
     padding: 16px 28px;
     background: $primary;
     color: $white;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 800;
     box-shadow: 0 6px 20px rgba(255, 107, 0, 0.35);
 
@@ -217,34 +242,37 @@
   }
 }
 
-// Map Section
-.mapCard {
+// 3. Map Section at bottom
+.mapSection {
   background: $white;
   border: 1px solid $border;
   border-radius: $radius-xl;
-  padding: 24px;
+  padding: 32px;
   box-shadow: $shadow-sm;
+
+  @include respond-to('sm') {
+    padding: 20px;
+  }
 
   .mapHeader {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 
     h3 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 800;
       color: $text;
     }
   }
 
   .mapFrameContainer {
-    height: 220px;
+    height: 300px;
     border-radius: $radius-md;
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     border: 1px solid $border;
-    position: relative;
 
     iframe {
       width: 100%;
@@ -254,167 +282,26 @@
   }
 
   .mapInfoText {
-    font-size: 14px;
+    font-size: 15px;
     color: $text-soft;
-    line-height: 1.5;
-    margin-bottom: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    background: $cream;
+    padding: 16px;
+    border-radius: $radius-md;
   }
 
   .navMapBtn {
     @include button-base;
     width: 100%;
-    padding: 12px;
-    background: $cream;
-    border: 1px solid $border;
-    color: $text;
-    font-size: 14px;
+    padding: 14px;
+    background: $primary;
+    color: $white;
+    font-size: 15px;
+    font-weight: 700;
 
     &:hover {
-      border-color: $primary;
-      color: $primary;
-    }
-  }
-}
-
-// Right Section: Live Chatroom
-.chatCard {
-  background: $white;
-  border: 1px solid $border;
-  border-radius: $radius-xl;
-  padding: 24px;
-  box-shadow: $shadow-sm;
-  display: flex;
-  flex-direction: column;
-  height: 580px;
-
-  @include respond-to('lg') {
-    height: 500px;
-  }
-
-  .chatHeader {
-    padding-bottom: 14px;
-    border-bottom: 1px solid $border;
-    margin-bottom: 16px;
-
-    h3 {
-      font-size: 18px;
-      font-weight: 800;
-      color: $text;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .onlineDot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #34c759;
-      }
-    }
-
-    p {
-      font-size: 12px;
-      color: $text-muted;
-      margin-top: 2px;
-    }
-  }
-
-  .messagesThread {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding-right: 4px;
-    margin-bottom: 16px;
-  }
-
-  .messageBubble {
-    display: flex;
-    gap: 10px;
-    max-width: 85%;
-
-    &.self {
-      align-self: flex-end;
-      flex-direction: row-reverse;
-
-      .content {
-        background: $primary;
-        color: $white;
-        border-radius: 16px 16px 2px 16px;
-
-        .sender {
-          color: rgba(255, 255, 255, 0.85);
-        }
-
-        .time {
-          color: rgba(255, 255, 255, 0.7);
-        }
-      }
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-
-    .content {
-      background: $cream;
-      border: 1px solid $border;
-      padding: 10px 14px;
-      border-radius: 16px 16px 16px 2px;
-      font-size: 14px;
-      line-height: 1.5;
-
-      .sender {
-        font-size: 11px;
-        font-weight: 700;
-        color: $text-muted;
-        margin-bottom: 2px;
-      }
-
-      .time {
-        font-size: 10px;
-        color: $text-muted;
-        margin-top: 4px;
-        text-align: right;
-      }
-    }
-  }
-
-  .chatForm {
-    display: flex;
-    gap: 8px;
-
-    input {
-      flex: 1;
-      padding: 12px 16px;
-      border-radius: $radius-full;
-      border: 1px solid $border;
-      background: $cream;
-      font-size: 14px;
-      font-family: inherit;
-
-      &:focus {
-        outline: none;
-        border-color: $primary;
-        background: $white;
-      }
-    }
-
-    button {
-      @include button-base;
-      padding: 12px 20px;
-      background: $primary;
-      color: $white;
-      font-size: 14px;
-
-      &:hover {
-        background: $primary-dark;
-      }
+      background: $primary-dark;
     }
   }
 }

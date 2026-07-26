@@ -77,7 +77,7 @@ export default function GamesPage() {
           <div className={styles.topRow}>
             <div>
               <h1>🔍 探索與報名附近的運動球局</h1>
-              <p>點擊任意球局即可獲得專屬分享連結、場館地圖導航與即時聊天室！</p>
+              <p>點擊任意球局即可獲得專屬分享連結與場館地圖導航！</p>
             </div>
             <Link href="/create" className={styles.hostBtn}>
               🏀 自己發起全新球局
@@ -166,22 +166,28 @@ export default function GamesPage() {
           <div className={gridStyles.grid}>
             {filteredGames.map((act) => (
               <Link key={act.id} href={`/game/${act.id}`} className={gridStyles.card}>
-                <div className={gridStyles.emoji}>{act.emoji}</div>
-                <h3 className={gridStyles.title}>{act.title}</h3>
-                <div className={gridStyles.location}>
-                  📍 {act.location} • {act.city} | ⏰ {act.time}
+                <div className={gridStyles.imageContainer}>
+                  <img src={act.image} alt={act.title} className={gridStyles.cardImage} />
+                  <span className={gridStyles.categoryBadge}>{act.category}</span>
                 </div>
 
-                <div className={gridStyles.footerRow}>
-                  <div className={gridStyles.avatars}>
-                    {act.avatars.slice(0, 3).map((url, idx) => (
-                      <img key={idx} src={url} alt="球友頭像" className={gridStyles.avatar} />
-                    ))}
-                    {act.goingCount > 3 && (
-                      <div className={gridStyles.extraCount}>+{act.goingCount - 3}</div>
-                    )}
+                <div className={gridStyles.cardBody}>
+                  <h3 className={gridStyles.title}>{act.title}</h3>
+                  <div className={gridStyles.location}>
+                    📍 {act.location} • {act.city} | ⏰ {act.time}
                   </div>
-                  <span className={gridStyles.goingBadge}>{act.goingCount} 人參戰</span>
+
+                  <div className={gridStyles.footerRow}>
+                    <div className={gridStyles.avatars}>
+                      {act.avatars.slice(0, 3).map((url, idx) => (
+                        <img key={idx} src={url} alt="球友頭像" className={gridStyles.avatar} />
+                      ))}
+                      {act.goingCount > 3 && (
+                        <div className={gridStyles.extraCount}>+{act.goingCount - 3}</div>
+                      )}
+                    </div>
+                    <span className={gridStyles.goingBadge}>{act.goingCount} 人參戰</span>
+                  </div>
                 </div>
               </Link>
             ))}

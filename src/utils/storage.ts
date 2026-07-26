@@ -1,17 +1,17 @@
-import { Activity } from '@/components/ActivityModal';
-
-const STORAGE_KEY = 'courtplay_created_games';
-const JOINED_KEY = 'courtplay_joined_game_ids';
-const PROFILE_KEY = 'courtplay_user_profile';
-const CHAT_STORAGE_KEY_PREFIX = 'courtplay_chat_';
-
-export interface ChatMessage {
+export interface Activity {
   id: string;
-  senderName: string;
-  avatar: string;
-  text: string;
-  timestamp: string;
-  isSelf?: boolean;
+  emoji: string;
+  title: string;
+  category: string;
+  location: string;
+  city: string;
+  time: string;
+  goingCount: number;
+  description: string;
+  avatars: string[];
+  fee?: string;
+  level?: string;
+  image?: string;
 }
 
 export interface UserProfile {
@@ -23,6 +23,10 @@ export interface UserProfile {
   favoriteSports: string[];
   level: string;
 }
+
+const STORAGE_KEY = 'courtplay_created_games';
+const JOINED_KEY = 'courtplay_joined_game_ids';
+const PROFILE_KEY = 'courtplay_user_profile';
 
 export const INITIAL_PROFILE: UserProfile = {
   name: 'Victor Chen',
@@ -47,6 +51,7 @@ export const INITIAL_GAMES: Activity[] = [
     description: '冷氣大開！歡樂雙打臨打團，初階與中階球友皆歡迎，使用勝家一級比賽球。現場提供公用球拍與飲水機。',
     fee: '$ 150 / 人',
     level: '初階歡樂友善',
+    image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80',
     avatars: [
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
@@ -66,6 +71,7 @@ export const INITIAL_GAMES: Activity[] = [
     description: '下班下課暢快流汗！目前已有 8 人，差 4 人可以開雙框輪流報隊。歡樂防守、無粗暴動作！',
     fee: '免費報隊',
     level: '不限程度（零基礎可）',
+    image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80',
     avatars: [
       'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
@@ -84,6 +90,7 @@ export const INITIAL_GAMES: Activity[] = [
     description: '徵求 NTRP 3.0 ~ 3.5 級別球友進行正反拍拉球與底線抽球練習，最後預留 30 分鐘打一盤搶七！',
     fee: '場地費均分',
     level: '中階切磋對抗',
+    image: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80',
     avatars: [
       'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&q=80',
@@ -101,6 +108,7 @@ export const INITIAL_GAMES: Activity[] = [
     description: '最火紅的皮克球！新手零基礎友善，現場提供球拍與皮克球，並有資深球友現場規則教學。',
     fee: '$ 100 / 人',
     level: '不限程度（零基礎可）',
+    image: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=800&q=80',
     avatars: [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=120&q=80',
@@ -118,6 +126,7 @@ export const INITIAL_GAMES: Activity[] = [
     description: '室內木地板網高 2.43m，徵求攻擊手與自由球員，注重團隊配合與開心打球！',
     fee: '$ 120 / 人',
     level: '中階切磋對抗',
+    image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=800&q=80',
     avatars: [
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
@@ -147,16 +156,29 @@ export function getGameById(id: string): Activity | undefined {
   return all.find((g) => g.id === id);
 }
 
-export function saveNewGame(newGame: Omit<Activity, 'id' | 'avatars'> & { fee?: string; level?: string }): Activity {
+export function saveNewGame(
+  newGame: Omit<Activity, 'id' | 'avatars'> & { fee?: string; level?: string; image?: string }
+): Activity {
   const existing = getStoredGames();
   const avatarList = [
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
     'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
   ];
 
+  const defaultImages: Record<string, string> = {
+    '羽球': 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80',
+    '籃球': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80',
+    '網球': 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80',
+    '排球': 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=800&q=80',
+  };
+
+  const key = newGame.category.substring(0, 2);
+  const fallbackImg = defaultImages[key] || 'https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80';
+
   const fullGameItem: Activity = {
     ...newGame,
     id: `custom_${Date.now()}`,
+    image: newGame.image && newGame.image.trim() ? newGame.image.trim() : fallbackImg,
     avatars: avatarList,
   };
 
@@ -169,7 +191,7 @@ export function saveNewGame(newGame: Omit<Activity, 'id' | 'avatars'> & { fee?: 
 
 // Joined Games Logic
 export function getJoinedGameIds(): string[] {
-  if (typeof window === 'undefined') return ['1', '3']; // default pre-joined for demonstration
+  if (typeof window === 'undefined') return ['1', '3'];
   try {
     const raw = localStorage.getItem(JOINED_KEY);
     return raw ? JSON.parse(raw) : ['1', '3'];
@@ -216,53 +238,4 @@ export function saveUserProfile(profile: UserProfile): UserProfile {
     localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
   }
   return profile;
-}
-
-// Chat Messages Helpers
-export function getGameMessages(gameId: string): ChatMessage[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(`${CHAT_STORAGE_KEY_PREFIX}${gameId}`);
-    if (raw) return JSON.parse(raw);
-  } catch (err) {
-    console.error('Failed to load chat messages:', err);
-  }
-
-  return [
-    {
-      id: 'm1',
-      senderName: '球局團長 (Host)',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-      text: '哈囉大家！比賽用球和飲料已經準備好了，大家記得攜帶毛巾並準時到場喔！🏸🏀',
-      timestamp: '10:30 AM',
-    },
-    {
-      id: 'm2',
-      senderName: '阿傑',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80',
-      text: '收到！請問附近開車方便停車嗎？',
-      timestamp: '10:35 AM',
-    },
-  ];
-}
-
-export function addGameMessage(gameId: string, text: string, senderName = '我 (You)'): ChatMessage[] {
-  const current = getGameMessages(gameId);
-  const now = new Date();
-  const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-  const newMessage: ChatMessage = {
-    id: `msg_${Date.now()}`,
-    senderName,
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    text,
-    timestamp: timeStr,
-    isSelf: true,
-  };
-
-  const updated = [...current, newMessage];
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(`${CHAT_STORAGE_KEY_PREFIX}${gameId}`, JSON.stringify(updated));
-  }
-  return updated;
 }

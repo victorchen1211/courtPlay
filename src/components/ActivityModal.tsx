@@ -16,6 +16,7 @@ export interface Activity {
   avatars: string[];
   fee?: string;
   level?: string;
+  image?: string;
 }
 
 interface ActivityModalProps {

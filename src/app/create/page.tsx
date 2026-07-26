@@ -9,17 +9,45 @@ import styles from '@/styles/components/create.module.scss';
 import { saveNewGame } from '@/utils/storage';
 
 const SPORTS_OPTIONS = [
-  { label: '羽球 🏸', emoji: '🏸', category: '羽球 🏸' },
-  { label: '籃球 🏀', emoji: '🏀', category: '籃球 🏀' },
-  { label: '網球 🎾', emoji: '🎾', category: '網球 🎾' },
-  { label: '皮克球 🏓', emoji: '🏓', category: '皮克球 🏓' },
-  { label: '排球 🏐', emoji: '🏐', category: '排球 🏐' },
-  { label: '桌球 🏓', emoji: '🏓', category: '桌球 🏓' },
-  { label: '足球 ⚽️', emoji: '⚽️', category: '足球 ⚽️' },
+  {
+    label: '羽球 🏸',
+    emoji: '🏸',
+    category: '羽球 🏸',
+    defaultImg: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    label: '籃球 🏀',
+    emoji: '🏀',
+    category: '籃球 🏀',
+    defaultImg: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    label: '網球 🎾',
+    emoji: '🎾',
+    category: '網球 🎾',
+    defaultImg: 'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    label: '皮克球 🏓',
+    emoji: '🏓',
+    category: '皮克球 🏓',
+    defaultImg: 'https://images.unsplash.com/photo-1534158914592-062992fbe900?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    label: '排球 🏐',
+    emoji: '🏐',
+    category: '排球 🏐',
+    defaultImg: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    label: '桌球 🏓',
+    emoji: '🏓',
+    category: '桌球 🏓',
+    defaultImg: 'https://images.unsplash.com/photo-1517649763962-0c623266010b?auto=format&fit=crop&w=800&q=80',
+  },
 ];
 
 const CITIES = ['台北市', '新北市', '桃園市', '新竹縣市', '台中市', '台南市', '高雄市', '其他縣市'];
-
 const LEVELS = ['初階歡樂友善', '中階切磋對抗', '高階競技切磋', '不限程度（零基礎可）'];
 
 export default function CreateGamePage() {
@@ -34,9 +62,11 @@ export default function CreateGamePage() {
   const [fee, setFee] = useState('');
   const [level, setLevel] = useState('初階歡樂友善');
   const [openSlots, setOpenSlots] = useState('4');
+  const [image, setImage] = useState('');
   const [description, setDescription] = useState('');
 
   const selectedSport = SPORTS_OPTIONS[sportIndex];
+  const activeImage = image.trim() || selectedSport.defaultImg;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +88,7 @@ export default function CreateGamePage() {
       description: description.trim() || '歡迎喜愛運動的球友一同報名流汗打球！',
       fee: fee.trim() || '免費報隊',
       level,
+      image: activeImage,
     });
 
     alert('🎉 球局成功發布！正在回到首頁...');
@@ -75,7 +106,7 @@ export default function CreateGamePage() {
             ← 返回首頁探索球局
           </Link>
           <h1>🏀 發起全新運動球局</h1>
-          <p>填寫球局資訊，30 秒快速尋找附近熱血球友一同開打！</p>
+          <p>填寫球局資訊與上傳照片，30 秒快速尋找附近熱血球友一同開打！</p>
         </div>
 
         {/* Main Grid: Form + Live Preview */}
@@ -87,7 +118,10 @@ export default function CreateGamePage() {
               <label>運動球類<span>*</span></label>
               <select
                 value={sportIndex}
-                onChange={(e) => setSportIndex(parseInt(e.target.value, 10))}
+                onChange={(e) => {
+                  const idx = parseInt(e.target.value, 10);
+                  setSportIndex(idx);
+                }}
               >
                 {SPORTS_OPTIONS.map((opt, idx) => (
                   <option key={idx} value={idx}>
@@ -107,6 +141,20 @@ export default function CreateGamePage() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
+            </div>
+
+            {/* Image Photo Upload */}
+            <div className={styles.formGroup}>
+              <label>球局照片 / 封面圖 URL</label>
+              <input
+                type="text"
+                placeholder="輸入球場或相片網址 (留空將自動匹配優質運動封面)"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+              />
+              <div style={{ fontSize: '12px', color: '#8c8c9e', marginTop: '4px' }}>
+                💡 可貼上 Unsplash 或 Imgur 圖片網址，或直接使用預設主題球場圖片
+              </div>
             </div>
 
             {/* City & Location */}
@@ -205,29 +253,52 @@ export default function CreateGamePage() {
               ✨ 球局卡片即時預覽 (Live Preview)
             </div>
 
-            <div className={styles.previewCard}>
-              <div className={styles.emoji}>{selectedSport.emoji}</div>
-              <h3 className={styles.title}>
-                {title.trim() || '球局標題預覽 (例如：中正運動中心羽球雙打)'}
-              </h3>
-              <div className={styles.location}>
-                📍 {location.trim() || '場地地點'} • {city} | ⏰ {time.trim() || '時間未定'}
-              </div>
-
-              <div className={styles.metaBadges}>
-                <span className={styles.pill}>💰 {fee.trim() || '免費報隊'}</span>
-                <span className={styles.pill}>🎯 {level}</span>
-              </div>
-
-              <div className={styles.descriptionPreview}>
-                {description.trim() || '球局說明會在此預覽顯示...'}
-              </div>
-
-              <div className={styles.footerRow}>
-                <span className={styles.goingBadge}>
-                  🔥 已徵求 {openSlots} 位球友
+            <div className={styles.previewCard} style={{ padding: 0, overflow: 'hidden' }}>
+              <div style={{ height: '160px', overflow: 'hidden', position: 'relative' }}>
+                <img
+                  src={activeImage}
+                  alt="預覽"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    background: 'rgba(255,255,255,0.92)',
+                    padding: '4px 12px',
+                    borderRadius: '20px',
+                    fontSize: '12px',
+                    fontWeight: 800,
+                  }}
+                >
+                  {selectedSport.category}
                 </span>
-                <span style={{ fontSize: '12px', color: '#8c8c9e' }}>courtPlay 即時開局</span>
+              </div>
+
+              <div style={{ padding: '20px' }}>
+                <h3 className={styles.title}>
+                  {title.trim() || '球局標題預覽 (例如：中正運動中心羽球雙打)'}
+                </h3>
+                <div className={styles.location}>
+                  📍 {location.trim() || '場地地點'} • {city} | ⏰ {time.trim() || '時間未定'}
+                </div>
+
+                <div className={styles.metaBadges}>
+                  <span className={styles.pill}>💰 {fee.trim() || '免費報隊'}</span>
+                  <span className={styles.pill}>🎯 {level}</span>
+                </div>
+
+                <div className={styles.descriptionPreview}>
+                  {description.trim() || '球局說明會在此預覽顯示...'}
+                </div>
+
+                <div className={styles.footerRow}>
+                  <span className={styles.goingBadge}>
+                    🔥 已徵求 {openSlots} 位球友
+                  </span>
+                  <span style={{ fontSize: '12px', color: '#8c8c9e' }}>courtPlay 即時開局</span>
+                </div>
               </div>
             </div>
           </div>
