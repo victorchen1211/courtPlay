@@ -13,10 +13,10 @@ export default function Navbar() {
       </Link>
 
       <div className={styles.links}>
-        <a href="#activities" className={styles.navHideMobile}>熱門球局</a>
-        <a href="#timeline" className={styles.navHideMobile}>如何揪團</a>
-        <a href="#reviews" className={styles.navHideMobile}>球友評價</a>
-        <a href="#download" className={styles.downloadCta}>立即開局 / 找球友</a>
+        <Link href="/#activities" className={styles.navHideMobile}>熱門球局</Link>
+        <Link href="/#timeline" className={styles.navHideMobile}>如何揪團</Link>
+        <Link href="/#reviews" className={styles.navHideMobile}>球友評價</Link>
+        <Link href="/create" className={styles.createCta}>🏀 立即開局</Link>
       </div>
     </nav>
   );

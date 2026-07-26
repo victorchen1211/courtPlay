@@ -14,6 +14,8 @@ export interface Activity {
   goingCount: number;
   description: string;
   avatars: string[];
+  fee?: string;
+  level?: string;
 }
 
 interface ActivityModalProps {
@@ -46,6 +48,21 @@ export default function ActivityModal({ activity, onClose }: ActivityModalProps)
           <span>⏰ {activity.time}</span>
         </div>
 
+        {(activity.fee || activity.level) && (
+          <div className={styles.extraPills} style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '14px' }}>
+            {activity.fee && (
+              <span style={{ background: '#fff2e6', color: '#ff6b00', padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: '700' }}>
+                💰 費用：{activity.fee}
+              </span>
+            )}
+            {activity.level && (
+              <span style={{ background: '#fff2e6', color: '#ff6b00', padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: '700' }}>
+                🎯 程度：{activity.level}
+              </span>
+            )}
+          </div>
+        )}
+
         <div className={styles.description}>
           {activity.description}
         </div>
@@ -75,9 +92,6 @@ export default function ActivityModal({ activity, onClose }: ActivityModalProps)
           >
             {isJoined ? '✓ 已成功報名球局！' : '🏀 立即報名參戰'}
           </button>
-          <a href="#download" className={styles.openAppBtn} onClick={onClose}>
-            📱 開啟 App 進入球局專屬聊天室
-          </a>
         </div>
       </div>
     </div>
