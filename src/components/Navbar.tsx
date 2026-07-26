@@ -3,12 +3,15 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from '../styles/components/navbar.module.scss';
+import CourtLogo from './CourtLogo';
 
 export default function Navbar() {
   return (
     <nav className={styles.nav} aria-label="主導覽列">
       <Link href="/" className={styles.brand}>
-        <div className={styles.logoBadge}>🏀</div>
+        <div className={styles.logoBadge}>
+          <CourtLogo size={22} color="#ffffff" />
+        </div>
         <span className={styles.logoText}>courtPlay</span>
       </Link>
 

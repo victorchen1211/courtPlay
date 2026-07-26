@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from '../styles/components/footer.module.scss';
+import CourtLogo from './CourtLogo';
 
 export default function Footer() {
   return (
@@ -10,7 +11,9 @@ export default function Footer() {
       <div className={styles.top}>
         <div className={styles.brandCol}>
           <div className={styles.logoRow}>
-            <div className={styles.badge}>🏀</div>
+            <div className={styles.badge}>
+              <CourtLogo size={20} color="#ffffff" />
+            </div>
             <span>courtPlay</span>
           </div>
           <p>
