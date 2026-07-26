@@ -1,0 +1,35 @@
+// Color Palette - Athletic Vibrant Orange Theme for courtPlay
+$primary: #ff6b00;
+$primary-soft: #fff2e6;
+$primary-dark: #e05500;
+$primary-gradient: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
+$warm-bg: #fffbf7;
+$warm-bg-alt: #fff8f0;
+$cream: #faf7f2;
+$peach: #ffe4cc;
+$text: #1e1e24;
+$text-soft: #4a4a5a;
+$text-muted: #8c8c9e;
+$border: rgba(0, 0, 0, 0.07);
+$border-focus: rgba(255, 107, 0, 0.4);
+$white: #ffffff;
+
+// Card & Component Tokens
+$radius-sm: 10px;
+$radius-md: 16px;
+$radius-lg: 24px;
+$radius-xl: 32px;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 16px 40px rgba(255, 107, 0, 0.15);
+$shadow-hover: 0 12px 32px rgba(255, 107, 0, 0.28);
+$shadow-modal: 0 24px 64px rgba(0, 0, 0, 0.18);
+
+// Breakpoints
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;

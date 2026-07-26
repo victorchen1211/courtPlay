@@ -1,0 +1,91 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include glassmorphism(0.85, 20px);
+
+  @include respond-to('md') {
+    padding: 12px 18px;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  .logoBadge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: $primary;
+    @include flex-center;
+    color: $white;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(250, 82, 111, 0.3);
+  }
+
+  .logoText {
+    font-size: 20px;
+    font-weight: 800;
+    color: $text;
+    letter-spacing: -0.6px;
+  }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  a {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-soft;
+    padding: 8px 16px;
+    border-radius: $radius-sm;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: $text;
+    }
+  }
+
+  @include respond-to('md') {
+    .navHideMobile {
+      display: none;
+    }
+  }
+}
+
+.downloadCta {
+  background: $primary !important;
+  color: $white !important;
+  font-weight: 700 !important;
+  padding: 10px 22px !important;
+  border-radius: $radius-full !important;
+  box-shadow: 0 4px 16px rgba(250, 82, 111, 0.25);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(250, 82, 111, 0.38) !important;
+    background: $primary-dark !important;
+  }
+}
